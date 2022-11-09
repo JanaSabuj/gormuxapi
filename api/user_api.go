@@ -8,14 +8,21 @@ import (
 	"net/http"
 )
 
-func GetUsers(w http.ResponseWriter, r *http.Request) {
+type UserApi struct {
+}
+
+func NewUserApi() UserApiInterface {
+	return &UserApi{}
+}
+
+func (self *UserApi) GetUsers(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var users []models.User
 	models.DB.Find(&users)
 	json.NewEncoder(w).Encode(users)
 }
 
-func GetUser(w http.ResponseWriter, r *http.Request) {
+func (self *UserApi) GetUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var user models.User
 	params := mux.Vars(r) // route params
@@ -23,7 +30,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
-func CreateUser(w http.ResponseWriter, r *http.Request) {
+func (self *UserApi) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	var user models.User
 	json.NewDecoder(r.Body).Decode(&user) // get it
@@ -33,7 +40,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user) // return it
 }
 
-func UpdateUser(w http.ResponseWriter, r *http.Request) {
+func (self *UserApi) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	var user models.User
@@ -43,7 +50,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(user)
 }
 
-func DeleteUser(w http.ResponseWriter, r *http.Request) {
+func (self *UserApi) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	params := mux.Vars(r)
 	var user models.User
