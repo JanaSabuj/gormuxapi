@@ -7,6 +7,7 @@ import (
 )
 
 var DB *gorm.DB
+var err error
 
 const dsn = "root:@tcp(127.0.0.1:3306)/gormuxapi_db?charset=utf8mb4&parseTime=True&loc=Local"
 
@@ -18,7 +19,8 @@ type User struct {
 }
 
 func InitDBMigration() {
-	DB, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	fmt.Println("CONNECTED")
 	if err != nil {
 		fmt.Println(err.Error())
 		panic("cannot connect to DB")
